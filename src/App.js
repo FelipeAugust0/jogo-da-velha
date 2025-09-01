@@ -4,7 +4,7 @@ import './App.css';
 
 function Square({valor, onSquareClick}){
   return(
-    <button className="square" onClick={onSquareClick}>
+    <button className="Square" onClick={onSquareClick}>
       {valor}
     </button>
   );
@@ -12,10 +12,21 @@ function Square({valor, onSquareClick}){
 
 export default function Tabuleiro(){
   const [squares, setSquares] = useState(Array(9).fill(null))
+  const [xIsNext, setXIsNext] = useState(true);
+
   function handleClick(i){
+    if(squares[i]) // se squares[i] é null o if não executa o return
+      return;
+      // o handleClick continua a execução pois o retutn não foi executado, o squares[i] era null!
+
     const nextSquares = squares.slice();
-    nextSquares[i] = "X";
+    if(xIsNext){
+      nextSquares[i] = "X";
+    }else{
+      nextSquares[i] = "O";
+    }
     setSquares(nextSquares);
+    setXIsNext(!xIsNext);
   }
   return(
     <div>
