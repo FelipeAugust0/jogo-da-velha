@@ -12,7 +12,7 @@ body {
   display: flex;
   flex-direction: row;
   gap: 15px;
-  align-items: flex-start; /* 🔥 fixa cada caixa no topo, sem crescer junto */
+  align-items: flex-start; 
 }
 
 .game-board {
@@ -21,7 +21,7 @@ body {
   border-radius: 12px;
   height: 300px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: inline-block; /* impede de crescer junto */
+  display: inline-block;
 }
 
 
@@ -81,7 +81,7 @@ body {
   transition: 0.3s;
 }
 
-/* Só aplica aos botões dentro da game-info */
+
 .game-info button {
   display: block;
   width: 100%;
@@ -90,11 +90,11 @@ body {
 
 
 .game-info li {
-  margin-bottom: 8px; /* espaço entre os botões */
+  margin-bottom: 8px;
 }
 
 .game-info button {
-  display: block;      /* força ficar em uma linha só */
-  width: 100%;         /* ocupa toda a largura da caixa */
-  text-align: left;    /* deixa o texto alinhado à esquerda (opcional) */
+  display: block;      
+  width: 100%;         
+  text-align: left;  
 }
