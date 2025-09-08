@@ -1,69 +1,73 @@
+/* Geral */
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: #f0f2f5;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  min-height: 100vh;
   margin: 0;
+  padding: 20px;
 }
 
+/* Jogo */
 .game {
   display: flex;
   flex-direction: row;
-  gap: 15px;
-  align-items: flex-start; 
+  gap: 40px;
 }
 
-.game-board {
+/* Tabuleiro */
+.tabuleiro {
+  display: flex;
+  flex-direction: column;
   background: #fff;
-  padding: 20px;
+  padding: 15px;
   border-radius: 12px;
-  height: 300px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-
-.status {
-  margin-bottom: 12px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
+/* Linha do tabuleiro */
+.linha {
+  display: flex;
 }
 
+/* Quadrados */
 .square {
-  background: #ffffff;
-  border: 2px solid #999;
-  float: left;
-  font-size: 32px;
-  font-weight: bold;
-  line-height: 60px;
-  height: 60px;
   width: 60px;
+  height: 60px;
   margin: 4px;
+  font-size: 28px;
+  font-weight: bold;
   text-align: center;
   cursor: pointer;
+  border: 2px solid #333;
   border-radius: 8px;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
+  background: #f9f9f9;
 }
 
 .square:hover {
-  background: #f8f8f8;
-  border-color: #555;
+  background: #e0f7fa;
+  transform: scale(1.1);
 }
 
-.square:focus {
-  outline: none;
-  background: #e0e0e0;
+/* Título do nível */
+.tabuleiro h3 {
+  text-align: center;
+  margin-bottom: 10px;
 }
 
+/* Níveis (os 3 tabuleiros) */
+.levels {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Informações do jogo */
 .game-info {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 40px;
 }
 
 .game-info ol {
@@ -71,30 +75,21 @@ body {
 }
 
 .game-info button {
-  background: #007bff;
-  border: none;
-  color: #fff;
-  padding: 8px 12px;
-  margin: 4px 0;
+  margin: 5px 0;
+  padding: 6px 10px;
   border-radius: 6px;
+  border: 1px solid #333;
+  background-color: #fff;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.2s ease;
 }
 
-
-.game-info button {
-  display: block;
-  width: 100%;
-  text-align: left;
+.game-info button:hover {
+  background-color: #c5cae9;
 }
 
-
-.game-info li {
-  margin-bottom: 8px;
-}
-
-.game-info button {
-  display: block;      
-  width: 100%;         
-  text-align: left;  
+/* Status do jogo */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
