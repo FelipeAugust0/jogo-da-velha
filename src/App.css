@@ -1,5 +1,100 @@
-.square{
-  fonte-size: medium;
-  color: blue;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
+.game {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: flex-start; /* 🔥 fixa cada caixa no topo, sem crescer junto */
+}
+
+.game-board {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  height: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block; /* impede de crescer junto */
+}
+
+
+.status {
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.square {
+  background: #ffffff;
+  border: 2px solid #999;
+  float: left;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 60px;
+  height: 60px;
+  width: 60px;
+  margin: 4px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.square:hover {
+  background: #f8f8f8;
+  border-color: #555;
+}
+
+.square:focus {
+  outline: none;
+  background: #e0e0e0;
+}
+
+.game-info {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-info ol {
+  padding-left: 20px;
+}
+
+.game-info button {
+  background: #007bff;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Só aplica aos botões dentro da game-info */
+.game-info button {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+
+.game-info li {
+  margin-bottom: 8px; /* espaço entre os botões */
+}
+
+.game-info button {
+  display: block;      /* força ficar em uma linha só */
+  width: 100%;         /* ocupa toda a largura da caixa */
+  text-align: left;    /* deixa o texto alinhado à esquerda (opcional) */
 }
