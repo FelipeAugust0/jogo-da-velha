@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 
+// Quadrado
 function Square({ valor, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -9,54 +10,41 @@ function Square({ valor, onSquareClick }) {
   );
 }
 
-function Tabuleiro({ xIsNext, squares, onPlay }) {
+// Tabuleiro 3D (um nível de 3x3)
+function Tabuleiro3D({ nivel, squares, xIsNext, onPlay }) {
   function handleClick(i) {
-    // Se squares de i é null o if não executa o return.
-    if (squares[i] || haVencedor(squares)) {
-      return;
-    }
-    // O handleClick continua a execução pois o return não
-    // foi executado o squares[i] era null.
+    const index = nivel * 9 + i;
+    if (squares[index] || haVencedor3D(squares)) return;
+
     const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = "x";
-    } else {
-      nextSquares[i] = "o";
-    }
+    nextSquares[index] = xIsNext ? "X" : "O";
     onPlay(nextSquares);
   }
 
-  const vencedor = haVencedor(squares);
-  let status;
-  if (vencedor) {
-    status = `Vencedor: ${vencedor}`;
-  } else {
-    status = "Proximo a jogar: " + (xIsNext ? "X" : "O");
-  }
   return (
-    <div>
-      <div className="status">{status}</div>
-      <div>
-        <Square valor={squares[0]}onSquareClick={() => {handleClick(0);}}/>
-        <Square valor={squares[1]}onSquareClick={() => {handleClick(1);}}/>
-        <Square valor={squares[2]}onSquareClick={() => {handleClick(2);}}/>
+    <div className="tabuleiro">
+      <div className="linha">
+        <Square valor={squares[nivel * 9 + 0]} onSquareClick={() => handleClick(0)} />
+        <Square valor={squares[nivel * 9 + 1]} onSquareClick={() => handleClick(1)} />
+        <Square valor={squares[nivel * 9 + 2]} onSquareClick={() => handleClick(2)} />
       </div>
-      <div>
-        <Square valor={squares[3]}onSquareClick={() => {handleClick(3);}}/>
-        <Square valor={squares[4]}onSquareClick={() => {handleClick(4);}}/>
-        <Square valor={squares[5]}onSquareClick={() => {handleClick(5);}}/>
+      <div className="linha">
+        <Square valor={squares[nivel * 9 + 3]} onSquareClick={() => handleClick(3)} />
+        <Square valor={squares[nivel * 9 + 4]} onSquareClick={() => handleClick(4)} />
+        <Square valor={squares[nivel * 9 + 5]} onSquareClick={() => handleClick(5)} />
       </div>
-      <div>
-        <Square valor={squares[6]}onSquareClick={() => {handleClick(6);}}/>
-        <Square valor={squares[7]}onSquareClick={() => {handleClick(7);}}/>
-        <Square valor={squares[8]}onSquareClick={() => {handleClick(8);}}/>
+      <div className="linha">
+        <Square valor={squares[nivel * 9 + 6]} onSquareClick={() => handleClick(6)} />
+        <Square valor={squares[nivel * 9 + 7]} onSquareClick={() => handleClick(7)} />
+        <Square valor={squares[nivel * 9 + 8]} onSquareClick={() => handleClick(8)} />
       </div>
     </div>
   );
 }
-//Implementa o game
+
+// Jogo principal
 export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([Array(27).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
@@ -71,27 +59,45 @@ export default function Game() {
     setCurrentMove(nextMove);
   }
 
+  const vencedor = haVencedor3D(currentSquares);
+  let status;
+  if (vencedor) {
+    status = `Vencedor: ${vencedor}`;
+  } else {
+    status = "Próximo a jogar: " + (xIsNext ? "X" : "O");
+  }
+
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
       description = "Vai para o movimento #" + move;
     } else {
-      description = "Vai para o inicio do jogo!";
+      description = "Vai para o início do jogo!";
     }
     return (
-      <il key={move}>
+      <li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
-      </il>
+      </li>
     );
   });
+
   return (
     <div className="game">
       <div className="game-board">
-        <Tabuleiro
-          xIsNext={xIsNext}
-          squares={currentSquares}
-          onPlay={handlePlay}
-        ></Tabuleiro>
+        <h2>{status}</h2>
+        <div className="levels">
+          {[0, 1, 2].map((nivel) => (
+            <div key={nivel}>
+              <h3>Nível {nivel + 1}</h3>
+              <Tabuleiro3D
+                nivel={nivel}
+                squares={currentSquares}
+                xIsNext={xIsNext}
+                onPlay={handlePlay}
+              />
+            </div>
+          ))}
+        </div>
       </div>
       <div className="game-info">
         <ol>{moves}</ol>
@@ -99,24 +105,59 @@ export default function Game() {
     </div>
   );
 }
-function haVencedor(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
 
-  for (let index = 0; index < lines.length; index++) {
-    const [a, b, c] = lines[index];
+// Função de verificação de vitória em 3D
+function haVencedor3D(squares) {
+  const lines = [];
+
+  // --- Linhas e colunas em cada nível (como no 2D) ---
+  for (let n = 0; n < 3; n++) {
+    const offset = n * 9;
+    // linhas
+    lines.push([offset + 0, offset + 1, offset + 2]);
+    lines.push([offset + 3, offset + 4, offset + 5]);
+    lines.push([offset + 6, offset + 7, offset + 8]);
+    // colunas
+    lines.push([offset + 0, offset + 3, offset + 6]);
+    lines.push([offset + 1, offset + 4, offset + 7]);
+    lines.push([offset + 2, offset + 5, offset + 8]);
+    // diagonais
+    lines.push([offset + 0, offset + 4, offset + 8]);
+    lines.push([offset + 2, offset + 4, offset + 6]);
+  }
+
+  // --- Colunas verticais entre níveis ---
+  for (let i = 0; i < 9; i++) {
+    lines.push([i, i + 9, i + 18]);
+  }
+
+  // --- Diagonais em pilares (mesma linha/coluna mas mudando nível) ---
+  // Linhas horizontais entre níveis
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      const base = row * 3 + col;
+      // Diagonal em profundidade (X e Y fixos, mudando Z)
+      if (row === col) {
+        lines.push([base, base + 10, base + 20]); // ↘
+      }
+      if (row + col === 2) {
+        lines.push([base, base + 8, base + 16]); // ↙
+      }
+    }
+  }
+
+  // --- Diagonais principais atravessando todo o cubo ---
+  lines.push([0, 13, 26]);
+  lines.push([2, 13, 24]);
+  lines.push([6, 13, 20]);
+  lines.push([8, 13, 18]);
+
+  // Verificação final
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
   }
   return null;
 }
-
