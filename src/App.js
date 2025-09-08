@@ -29,7 +29,7 @@ function Tabuleiro({ xIsNext, squares, onPlay }) {
   const vencedor = haVencedor(squares);
   let status;
   if (vencedor) {
-    status = "vencedor: " + { vencedor };
+    status = `Vencedor: ${vencedor}`;
   } else {
     status = "Proximo a jogar: " + (xIsNext ? "X" : "O");
   }
@@ -119,3 +119,4 @@ function haVencedor(squares) {
   }
   return null;
 }
+
